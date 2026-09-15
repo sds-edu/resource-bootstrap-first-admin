@@ -59,15 +59,17 @@ Regardless of the approach you take, the bootstrap operation should be **idempot
 
 We should also be wary of race conditions and concurrent executions. Two application instances may both observe that initialization is incomplete. Use appropriate concurrency mechanisms so only one bootstrap attempt succeeds without being affected by the other.
 
-### First-Run Setup Wizard
+### First-Run Setup Wizard & Single Use Initialization Token
 
-A first-run setup wizard lets an authorized operator create the initial admin through the application's UI. It should be enabled only while the application is explicitly marked as uninitialized.
+A first-run setup wizard lets an authorized operator create the initial admin through the application, if the application detects that it's uninitialized.
 
-Jenkins uses a setup wizard for new installations. It generates an initial administrator password that the operator retrieves from the installation and enters to unlock the wizard before proceeding to first-admin creation. See the [Jenkins setup documentation](https://www.jenkins.io/doc/book/installing/windows/#post-installation-setup-wizard).
+Similarly, the application or the deployment process can generate a secure and random single use initialization token (SUIT). The operator retrieves this and submits through a setup page or endpoint, and the server then validates it and creates the first admin account using application logic.
 
-A publicly accessible wizard that simply makes the first visitor an admin can be claimed by an attacker. To prevent this, require proof of operator access before allowing account creation.
+Jenkins uses a mix of these approaches for new installations. It generates a SUIT that the operator retrieves from the installation and enters to unlock the wizard before proceeding to first-admin creation. See the [Jenkins setup documentation](https://www.jenkins.io/doc/book/installing/windows/#post-installation-setup-wizard).
 
-The points from the environment variables and startup script setups still stand here. After the setup wizard runs to completion, it must then be invalidated so any further admin setup requests are correctly invalidated. It also shouldn’t create multiple admin accounts when multiple users simultaneously connect to an uninitialized application.
+A publicly accessible wizard that simply makes the first visitor an admin can be claimed by an attacker. To prevent this, require proof of operator access before allowing account creation. Likewise, the SUIT should be read by or delievered to the admin user through secured modes.
+
+The points from the environment variables and startup script setups still stand here. After the setup wizard runs to completion or the single use init token is used, they must then be invalidated so any further admin setup requests are correctly denied. It also shouldn’t create multiple admin accounts when multiple users simultaneously connect to an uninitialized application or use the SUIT.
 
 ### Framework Management Commands
 

@@ -15,7 +15,7 @@ However, even this approach raises another problem.
 
 **How are we creating the first admin(s)?**
 
-This type of chicken-and-egg problem in software engineering is often called **bootstrapping,** derived from the phrase “pulling yourself up by your own bootstraps”**.**
+This type of chicken-and-egg problem in software engineering is often called **bootstrapping,** derived from the phrase “pulling yourself up by your own bootstraps”.
 
 We’ll examine the anti-pattern for admin bootstrapping first, and explore what alternatives there are and what you should look out for in your own admin bootstrapping.
 

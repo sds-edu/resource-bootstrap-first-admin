@@ -7,7 +7,7 @@ Our applications will often have two broad types of users:
 1. Regular users \- Users who perform the actions the application is primarily designed to support.
 2. Administrators \- Users with additional privileges, such as modifying other users' data or status, managing protected resources, and configuring the application.
 
-Regular users can usually create their accounts through the normal signup flow. However, allowing anyone to select an administrator role during signup would grant privileged access to unauthorized users, which can have unintended consequences. A separate admin signup page does not prevent this by itself either. Nonetheless, we still need a way for creating admin accounts for authorized users.
+Regular users can usually create their accounts through the normal signup flow. However, allowing anyone to select an administrator role during signup would grant privileged access to unauthorized users, which can have unintended consequences. A separate admin signup page does not prevent this by itself either. Nonetheless, we still need a way to create admin accounts for authorized users.
 
 One approach we can think of is letting admins invite or promote other admins. This makes sense because an admin, by definition, has the power and knowledge to do such things, and it’s a model we’re familiar with in other systems such as Telegram group chats.
 
@@ -59,18 +59,18 @@ Regardless of the approach you take, the bootstrap operation should be **idempot
 
 We should also be wary of race conditions and concurrent executions. Two application instances may both observe that initialization is incomplete. Use appropriate concurrency mechanisms so only one bootstrap attempt succeeds without being affected by the other.
 
-### First-Run Setup Wizard & Single Use Initialization Token
+### First-Run Setup Wizard & Single-Use Initialization Token
 
 A first-run setup wizard lets an authorized operator create the initial admin through the application, if the application detects that it's uninitialized.
 
-Similarly, the application or the deployment process can generate a secure and random single use initialization token (SUIT). The operator retrieves this and submits through a setup page or endpoint, and the server then validates it and creates the first admin account using application logic.
+Similarly, the application or the deployment process can generate a secure and random single-use initialization token. The operator retrieves this and submits through a setup page or endpoint, and the server then validates it and creates the first admin account using application logic.
 
-Jenkins uses a mix of these approaches for new installations. It generates a SUIT that the operator retrieves from the installation and enters to unlock the wizard before proceeding to first-admin creation. See the [Jenkins setup documentation](https://www.jenkins.io/doc/book/installing/windows/#post-installation-setup-wizard).
+Jenkins uses a mix of these approaches for new installations. It generates an initialization token that the operator retrieves from the installation and enters to unlock the wizard before proceeding to first-admin creation. See the [Jenkins setup documentation](https://www.jenkins.io/doc/book/installing/windows/#post-installation-setup-wizard).
 
-A publicly accessible wizard that simply makes the first visitor an admin can be claimed by an attacker. To prevent this, require proof of operator access before allowing account creation. Likewise, the SUIT should be read by or delievered to the admin user through secured modes.
+A publicly accessible wizard that simply makes the first visitor an admin can be claimed by an attacker. To prevent this, require proof of operator access before allowing account creation. Likewise, the initialization token should be read by or delivered to the admin user through secured modes.
 
-The points from the environment variables and startup script setups still stand here. After the setup wizard runs to completion or the single use init token is used, they must then be invalidated so any further admin setup requests are correctly denied. If not done correctly, this can lead to security vulnerabilities, as experienced by [ScreenConnect](https://www.huntress.com/blog/a-catastrophe-for-control-understanding-the-screenconnect-authentication-bypass).
-It also shouldn’t create multiple admin accounts when multiple users simultaneously connect to an uninitialized application or use the SUIT.
+The points from the environment variables and startup script setups still stand here. After the setup wizard runs to completion or the single-use initialization token is used, they must then be invalidated so any further admin setup requests are correctly denied. If not done correctly, this can lead to security vulnerabilities, as experienced by [ScreenConnect](https://www.huntress.com/blog/a-catastrophe-for-control-understanding-the-screenconnect-authentication-bypass).
+It also shouldn’t create multiple admin accounts when multiple users simultaneously connect to an uninitialized application or use the initialization token.
 
 ### Framework Management Commands
 

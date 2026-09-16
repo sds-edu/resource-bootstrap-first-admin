@@ -43,15 +43,15 @@ Direct database edits may bypass application-level audit events. You can argue t
 
 Manual edits are also difficult to reproduce consistently across development, staging, and production environments, which may lead to inconsistency and communication breakdown during QA or end-to-end testing in different environments.
 
-### Other Concerns
+### Security Concerns
 
-Direct database access may be necessary for some maintenance or recovery tasks. However, making this the routine way to manage admins may be a slippery slope that encourages broader database permissions than operators need and increases the chance of mistakes.
+Direct database access may be necessary for some maintenance or recovery tasks. However, making this the routine way to manage admins may be a slippery slope that encourages broader database permissions than operators need,and increases the chance of mistakes and vulnerabilities. [According to OWASP guidelines, our database should be as isolated as possible](https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html#protecting-the-backend-database).
 
 ## Better Solutions
 
 ### Environment Variables and Bootstrap Scripts
 
-This is the most common and straightforward approach. On application startup, we can call an initialization function that checks for env variables containing the first admin data. Then the application reads the data and calls the necessary functions to create the admin and trigger the necessary side effects. A deployment job that reads this .env file can be created to do the same thing.
+This is the most common and straightforward approach. On application startup, we can call an initialization function that checks for env variables containing the first admin data. Then the application reads the data and calls the necessary functions to create the admin and trigger the necessary side effects. A deployment job that reads this .env file can be created to do the same thing. This is the approach Keycloak takes on startup. [See the Keycloak setup documentation](https://www.keycloak.org/server/bootstrap-admin-recovery).
 
 A standalone initialization script can also work, provided repeated and concurrent execution is handled safely. This can be as simple as a versioned database migration, or an API call to a protected admin creation endpoint.
 
@@ -69,7 +69,8 @@ Jenkins uses a mix of these approaches for new installations. It generates a SUI
 
 A publicly accessible wizard that simply makes the first visitor an admin can be claimed by an attacker. To prevent this, require proof of operator access before allowing account creation. Likewise, the SUIT should be read by or delievered to the admin user through secured modes.
 
-The points from the environment variables and startup script setups still stand here. After the setup wizard runs to completion or the single use init token is used, they must then be invalidated so any further admin setup requests are correctly denied. It also shouldn’t create multiple admin accounts when multiple users simultaneously connect to an uninitialized application or use the SUIT.
+The points from the environment variables and startup script setups still stand here. After the setup wizard runs to completion or the single use init token is used, they must then be invalidated so any further admin setup requests are correctly denied. If not done correctly, this can lead to security vulnerabilities, as experienced by [ScreenConnect](https://www.huntress.com/blog/a-catastrophe-for-control-understanding-the-screenconnect-authentication-bypass).
+It also shouldn’t create multiple admin accounts when multiple users simultaneously connect to an uninitialized application or use the SUIT.
 
 ### Framework Management Commands
 

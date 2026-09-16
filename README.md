@@ -45,7 +45,7 @@ Manual edits are also difficult to reproduce consistently across development, st
 
 ### Security Concerns
 
-Direct database access may be necessary for some maintenance or recovery tasks. However, making this the routine way to manage admins may be a slippery slope that encourages broader database permissions than operators need,and increases the chance of mistakes and vulnerabilities. [According to OWASP guidelines, our database should be as isolated as possible](https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html#protecting-the-backend-database).
+Direct database access may be necessary for some maintenance or recovery tasks. However, making this the routine way to manage admins may be a slippery slope that encourages broader database permissions than operators need, and increases the chance of mistakes and vulnerabilities. [According to OWASP guidelines, our database should be as isolated as possible](https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html#protecting-the-backend-database).
 
 ## Better Solutions
 
@@ -63,7 +63,7 @@ We should also be wary of race conditions and concurrent executions. Two applica
 
 A first-run setup wizard lets an authorized operator create the initial admin through the application, if the application detects that it's uninitialized.
 
-Similarly, the application or the deployment process can generate a secure and random single-use initialization token. The operator retrieves this and submits through a setup page or endpoint, and the server then validates it and creates the first admin account using application logic.
+Similarly, the application or the deployment process can generate a secure and random single-use initialization token. The operator retrieves this and submits it through a setup page or endpoint, and the server then validates it and creates the first admin account using application logic.
 
 Jenkins uses a mix of these approaches for new installations. It generates an initialization token that the operator retrieves from the installation and enters to unlock the wizard before proceeding to first-admin creation. See the [Jenkins setup documentation](https://www.jenkins.io/doc/book/installing/windows/#post-installation-setup-wizard).
 
@@ -82,7 +82,7 @@ One caveat is that a framework command can handle the framework's account model 
 
 ## Closing Remarks
 
-In this article, we looked at why ad-hock database modification for admin creation is an anti-pattern and explored safer alternatives.
+In this article, we looked at why ad-hoc database modification for admin creation is an anti-pattern and explored safer alternatives.
 
 While other valid patterns and solutions exist beyond what we covered, any method you choose should satisfy these core requirements:
 

@@ -17,7 +17,7 @@ However, even this approach raises another problem.
 
 This type of chicken-and-egg problem in software engineering is often called **bootstrapping,** derived from the phrase “pulling yourself up by your own bootstraps”.
 
-We’ll examine the anti-pattern for admin bootstrapping first, and explore what alternatives there are and what you should look out for in your own admin bootstrapping.
+We’ll examine the anti-pattern for admin bootstrapping first and explore better solutions and what you should look out for in your own admin bootstrapping.
 
 ## Anti-pattern: Ad Hoc Direct Database Modification
 
@@ -47,7 +47,7 @@ Manual edits are also difficult to reproduce consistently across development, st
 
 Direct database access may be necessary for some maintenance or recovery tasks. However, making this the routine way to manage admins may be a slippery slope that encourages broader database permissions than operators need and increases the chance of mistakes.
 
-## Alternative Solutions
+## Better Solutions
 
 ### Environment Variables and Bootstrap Scripts
 
@@ -81,7 +81,9 @@ One caveat is that a framework command can handle the framework's account model 
 
 ## Closing Remarks
 
-These are not the only ways to create the first admin(s). Whichever approach you choose, make sure it meets the following requirements:
+In this article, we looked at why ad-hock database modification for admin creation is an anti-pattern and explored safer alternatives.
+
+While other valid patterns and solutions exist beyond what we covered, any method you choose should satisfy these core requirements:
 
 1. **Correct initialization** \- It creates the required account records and permissions and reliably handles necessary side effects.
 2. **Controlled authorization** \- Only an authorized operator, deployment identity, or explicitly designated user can create the initial admin. Subsequent privilege grants are also authorized on the server.

@@ -21,11 +21,22 @@ We’ll examine the anti-pattern for admin bootstrapping first and explore bette
 
 ## Anti-pattern: Ad Hoc Direct Database Modification
 
-The easiest approach would be to insert an admin account or change an existing user's role directly in the database, using SQL or a database GUI.
+The easiest approach would be to manually insert an admin account directly into the database like this:
 
-Contrary to this section’s title, direct database modification is not inherently an anti-pattern. A reviewed, versioned script can be a valid bootstrap mechanism if it satisfies the application's requirements.
+```sql
+INSERT INTO users (username, email, role)
+VALUES ('Alice', 'alice@example.com', 'ADMIN');
+```
 
-The concern is relying on ad hoc edits that bypass required account initialization, lack a clear audit trail, or are difficult to reproduce.
+Or elevating an existing user's role directly in the database like this:
+
+```sql
+UPDATE users SET role = 'ADMIN' WHERE email = 'bob@example.com';
+```
+
+Of course you can do this with your favorite database GUI as well, which runs these commands under the hood for you.
+
+Although seemingly innocent and straightforward, direct ad hoc edits like these may cause several architectural problems, as outlined in the following sections.
 
 ### Application Business Logic Bypass
 

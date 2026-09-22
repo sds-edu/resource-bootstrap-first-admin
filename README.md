@@ -105,4 +105,4 @@ While other valid patterns and solutions exist beyond what we covered, any metho
 
 # AI Declaration
 
-Some parts of this guide were structured, formatted, and refined with the assistance of `Purplexity` and `Gemini`. The models were used to draft technical explanations and generate code snippets. All code snippets used in the guide and command sequences were reviewed, implemented, and tested by the teaching team to ensure accuracy and functionality.
+Some parts of this guide were structured, formatted, and refined with the assistance of `Perplexity` and `Gemini`. The models were used to draft technical explanations and generate code snippets. All code snippets used in the guide and command sequences were reviewed, implemented, and tested by the teaching team to ensure accuracy and functionality.

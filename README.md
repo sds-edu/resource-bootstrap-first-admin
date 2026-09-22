@@ -102,3 +102,7 @@ While other valid patterns and solutions exist beyond what we covered, any metho
 3. **Reproducibility and auditability** \- The procedure is documented or automated, works consistently across environments, and records the provisioning action without exposing secrets.
 4. **Safe repeated and concurrent execution** \- Repeated attempts do not duplicate accounts, reset credentials, or restore revoked privileges, and simultaneous attempts cannot both complete bootstrap provisioning.
 5. **Secure credential handling** \- Credentials are securely protected, temporary secrets are invalidated after use, and assigned temporary passwords are replaced on first login.
+
+# AI Declaration
+
+Some parts of this guide were structured, formatted, and refined with the assistance of `Purplexity` and `Gemini`. The models were used to draft technical explanations and generate code snippets. All code snippets used in the guide and command sequences were reviewed, implemented, and tested by the teaching team to ensure accuracy and functionality.
